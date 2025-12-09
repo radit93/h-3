@@ -14,6 +14,7 @@ import CategoryPage from "./pages/Category/CategoryPage";
 import ProtectedRoute from "./route/ProtectedRoute";
 import PublicRoute from "./route/PublicRoute";
 import AdminRoute from "./route/AdminRoute";
+import { useAuth } from "./context/authContext";
 
 import AdminLayout from "./pages/Admin/AdminLayout";
 import Dashboard from "./pages/Admin/Dashboard";
@@ -33,6 +34,21 @@ import OrderDetail from "./pages/OrderDetail";
 
 export default function App() {
   const location = useLocation();
+  const { profile, loading, profileLoading } = useAuth();
+
+  // GLOBAL LOADING (supaya tidak flicker)
+  if (loading || profileLoading) {
+    return <div className="p-6">Loading...</div>;
+  }
+
+  // GLOBAL GUARD UNTUK ADMIN:
+  // Admin tidak boleh masuk halaman user/public
+  if (profile?.role === "admin") {
+    const allowedAdminPath = location.pathname.startsWith("/admin");
+    if (!allowedAdminPath) {
+      return <Navigate to="/admin" replace />;
+    }
+  }
 
   const hideLayout =
     location.pathname.startsWith("/login") ||
@@ -45,27 +61,26 @@ export default function App() {
     location.pathname.startsWith("/admin") ||
     location.pathname.startsWith("/checkout");
 
-
   return (
     <>
       {!hideLayout && <Header />}
 
       <Routes>
-
+        {/* PUBLIC */}
         <Route path="/" element={<Main />} />
 
-        {/* Auth */}
+        {/* AUTH */}
         <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
         <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
 
-        {/* Category */}
+        {/* CATEGORY */}
         <Route path="/category/:main" element={<CategoryPage />} />
         <Route path="/category/:main/:sub" element={<CategoryPage />} />
 
-        {/* Product */}
+        {/* PRODUCT */}
         <Route path="/product/:id" element={<ProductDetails />} />
 
-        {/* User */}
+        {/* USER */}
         <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
         <Route path="/wishlist" element={<ProtectedRoute><Wishlist /></ProtectedRoute>} />
         <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
@@ -76,7 +91,7 @@ export default function App() {
         <Route path="/orders" element={<ProtectedRoute><UserOrders /></ProtectedRoute>} />
         <Route path="/order/:id" element={<ProtectedRoute><OrderDetail /></ProtectedRoute>} />
 
-        {/* ADMIN ROUTES */}
+        {/* ADMIN */}
         <Route
           path="/admin/*"
           element={
@@ -94,7 +109,7 @@ export default function App() {
           <Route path="orders" element={<OrdersPage />} />
         </Route>
 
-        {/* Wrong routes */}
+        {/* WRONG ROUTES */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 

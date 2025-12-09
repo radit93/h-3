@@ -191,6 +191,14 @@ export default function CheckoutPage() {
       return;
     }
 
+    // SIMPAN SNAP TOKEN
+    const token = data.token;
+
+    await supabase
+      .from("orders")
+      .update({ snap_token: token })
+      .eq("id", newOrder.id);
+
     // 5) Buka Snap
     window.snap.pay(data.token, {
       onSuccess: function () {
@@ -204,7 +212,7 @@ export default function CheckoutPage() {
       },
       onClose: function () {
         // user nutup pop up tanpa bayar
-        // biarin, status tetap 'menunggu_pembayaran'
+        // biarin, status tetap 'Waiting for payment'
         navigate("/orders");
       },
     });

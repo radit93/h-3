@@ -142,12 +142,30 @@ export default function OrderDetail() {
           }`}
         >
           Status:{" "}
-          {order.status === "menunggu_pembayaran"
+          {order.status === "Waiting For Payment"
             ? "Selesaikan pembayaran terlebih dahulu"
             : order.status}
         </span>
 
       </div>
+
+      {/* TOMBOL LANJUTKAN PEMBAYARAN (HANYA KELUAR JIKA BELUM DIBAYAR) */}
+      {order.status === "Waiting For Payment" && order.snap_token && (
+        <button
+          onClick={() => {
+            window.snap.pay(order.snap_token, {
+              onSuccess: () => navigate("/order-success"),
+              onPending: () => navigate("/order-success"),
+              onError: () => alert("Pembayaran gagal."),
+              onClose: () =>
+                alert("Kamu menutup pembayaran. Klik tombol ini lagi untuk melanjutkan."),
+            });
+          }}
+          className="mb-6 px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition"
+        >
+          Lanjutkan Pembayaran
+        </button>
+      )}
 
       {/* INFORMASI PEMESAN */}
       <div className="bg-white p-5 rounded-xl shadow mb-6">

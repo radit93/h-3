@@ -9,22 +9,24 @@ export default function AdminRoute({ children }) {
     return <p className="p-6">Loading...</p>;
   }
 
+  // Tidak login → suruh login
   if (!user) {
     return <Navigate to="/login" replace />;
   }
 
+  // Profil belum ada → jangan rusuh
   if (!profile) {
     return <p className="p-6">Loading profile...</p>;
   }
 
-  // jika user bukan admin
+  // Role bukan admin → tendang ke dashboard user
   if (profile.role !== "admin") {
     return <Navigate to="/dashboard" replace />;
   }
 
-  // jika admin mencoba pergi keluar admin (contoh: "/")
-  const isAdminPath = location.pathname.startsWith("/admin");
-  if (!isAdminPath) {
+  // Admin mencoba keluar dari zona /admin
+  const isInsideAdmin = location.pathname.startsWith("/admin");
+  if (!isInsideAdmin) {
     return <Navigate to="/admin" replace />;
   }
 

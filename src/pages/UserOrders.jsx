@@ -67,7 +67,7 @@ export default function UserOrders() {
               </h2>
               <span
                 className={`px-4 py-1 rounded-lg text-sm font-semibold ${
-                  order.status === "menunggu_pembayaran"
+                  order.status === "Waiting For Payment"
                     ? "bg-red-100 text-red-700"
                     : order.status === "dikemas"
                     ? "bg-yellow-100 text-yellow-700"
@@ -77,7 +77,7 @@ export default function UserOrders() {
                 }`}
               >
                 Status:{" "}
-                {order.status === "menunggu_pembayaran"
+                {order.status === "Waiting For Payment"
                   ? "Selesaikan pembayaran terlebih dahulu"
                   : order.status}
               </span>

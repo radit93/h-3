@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import supabase from "../lib/supabaseClient";
 import { useAuth } from "../context/authContext";
-import { ShoppingCart, HeartPlus } from "lucide-react";
+import { ShoppingCart, HeartPlus, ArrowLeft } from "lucide-react";
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -212,11 +212,11 @@ export default function ProductDetails() {
   return (
     <div className="w-full">
       <button
-        onClick={() => navigate(-1)}
-        className=" mt-7 mb-4 ml-6 px-4 border border-black rounded bg-black hover:bg-none text-white transition"
-      >
-        Kembali
-      </button>
+              className="mb-7 mt-7 ml-6 rounded-lg bg-black hover:bg-none text-white transition"
+              onClick={() => navigate(-1)}
+            >
+              <ArrowLeft size={20} />
+            </button>
 
       {/* GALERI BESAR (FULL-WIDTH SWIPE) */}
       <div

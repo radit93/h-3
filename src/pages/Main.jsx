@@ -71,6 +71,10 @@ function Main() {
               <ProductCarousel brandSlug="nike" />
 
               {/* Row Brand New Balance */}
+              <SectionTitle title="Puma" link="/category/puma" />
+              <ProductCarousel brandSlug="puma" />
+
+              {/* Row Brand New Balance */}
               <SectionTitle title="New Balance" link="/category/newbalance" />
               <ProductCarousel brandSlug="newbalance" />
             </>
